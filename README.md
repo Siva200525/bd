@@ -1,4 +1,4 @@
-# Vish Birthday (Master Build) 💜
+Birthday (Master Build) 💜
 
 This is the fully customized, cinematic, and interactive birthday experience built for Vish.
 
