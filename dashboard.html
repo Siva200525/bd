@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Dashboard - Vish Birthday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #05030a; color: #fdfbf7; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #9d6bfa; font-weight: 500; letter-spacing: 0.1em; }
+        
+        .setup-warning { background: rgba(255,181,204,0.1); border: 1px solid #ffb5cc; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .card { background: rgba(157,107,250,0.1); border: 1px solid rgba(157,107,250,0.2); padding: 20px; border-radius: 12px; }
+        .card h3 { margin-top: 0; color: #d4baff; border-bottom: 1px solid rgba(157,107,250,0.2); padding-bottom: 10px; }
+        
+        .item { padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .item:last-child { border-bottom: none; }
+        .time { font-size: 0.75rem; color: #888; display: block; margin-bottom: 5px; }
+        
+        .mem-img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
+        .live-box { border-left: 3px solid #ffb5cc; padding-left: 15px; background: rgba(255,181,204,0.05); border-radius: 0 8px 8px 0; }
+    </style>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>CREATOR DASHBOARD 💜</h1>
+        
+        <div class="setup-warning" id="setupWarning">
+            <strong>Firebase Not Configured</strong><br>
+            You must add your Firebase configuration object to <code>dashboard.html</code> (line 46) and <code>script.js</code> (line 17) for the dashboard to receive live updates.
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Live Typing 🔴</h3>
+                <div class="item live-box" id="liveTyping">Waiting for input...</div>
+            </div>
+            
+            <div class="card">
+                <h3>Shared Memories 📸</h3>
+                <div id="memoriesList">Waiting...</div>
+            </div>
+            
+            <div class="card">
+                <h3>Shared Wishes ✨</h3>
+                <div id="wishesList">Waiting...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ADD YOUR CONFIG HERE (Same as script.js)
+        const firebaseConfig = {
+            apiKey: "",
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: ""
+        };
+
+        if (firebaseConfig.apiKey) {
+            document.getElementById('setupWarning').style.display = 'none';
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            // Listen to Live Typing
+            db.collection('live_typing').doc('memory').onSnapshot(doc => {
+                if (doc.exists) document.getElementById('liveTyping').textContent = doc.data().text || "User cleared text";
+            });
+
+            // Listen to Memories
+            db.collection('memories').orderBy('timestamp', 'desc').onSnapshot(snap => {
+                const list = document.getElementById('memoriesList');
+                list.innerHTML = '';
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    list.innerHTML += `
+                        <div class="item">
+                            <span class="time">${data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now'}</span>
+                            <img src="${data.image}" class="mem-img">
+                            <div><strong>${data.caption}</strong> (${data.date})</div>
+                        </div>
+                    `;
+                });
+            });
+            
+            // Listen to Wishes
+            db.collection('wishes').orderBy('timestamp', 'desc').onSnapshot(snap => {
+                const list = document.getElementById('wishesList');
+                list.innerHTML = '';
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    list.innerHTML += `
+                        <div class="item">
+                            <span class="time">${data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now'}</span>
+                            <div>${data.text}</div>
+                        </div>
+                    `;
+                });
+            });
+        }
+    </script>
+</body>
+</html>

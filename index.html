@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#07030f" />
+<title>For Vish 💜</title>
+<meta name="description" content="A birthday world that comes back every year — made by Siva for Vish." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>" />
+<link rel="stylesheet" href="style.css" />
+
+<!-- Firebase (optional cloud) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+</head>
+<body class="is-locked">
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<!-- Background system -->
+<div class="bgphoto" id="bgPhoto" aria-hidden="true">
+  <span class="bgphoto__img" id="bgPhotoImg"></span>
+  <span class="bgphoto__veil" id="bgPhotoVeil"></span>
+</div>
+
+<!-- FX canvases -->
+<canvas class="canvas-fx" id="fxCanvas"></canvas>
+<canvas class="canvas-dust" id="dustCanvas"></canvas>
+
+<!-- ══════════════════════════════════════════════════════
+     OPENING SEQUENCE
+     ══════════════════════════════════════════════════════ -->
+<div class="opening" id="opening">
+  <div class="opening__stars" aria-hidden="true"></div>
+  <div class="opening__text" id="openingText">
+    <span class="opening__hb" id="openingHB">HAPPY BIRTHDAY</span>
+    <span class="opening__name" id="openingName">VISH 💜</span>
+    <span class="opening__tagline" id="openingTagline"></span>
+  </div>
+  
+  <!-- Cinematic Additions -->
+  <img src="img/hero.jpg" id="charHero" class="char-hero" alt="Cartoon Hero" hidden />
+  
+  <div id="photoMoment" class="photo-moment" hidden>
+    <div id="photoPrompt" class="photo-prompt">WAIT... ONE PHOTO! 📸</div>
+    <div id="cameraFlash" class="camera-flash" hidden></div>
+    <div id="photoFrame" class="photo-frame" hidden>
+      <div class="photo-img-wrapper">
+        <img id="photoImg" src="img/hero.jpg" alt="Placeholder Photo" />
+      </div>
+      <label for="photoUpload" class="btn btn--primary">ADD YOUR PHOTO 📸</label>
+      <input type="file" id="photoUpload" accept="image/*" hidden />
+    </div>
+    <div id="photoReaction" class="photo-reaction" hidden>Perfect! 💜</div>
+  </div>
+
+  <div id="cakeScene" class="cake-scene" hidden>
+    <div id="cakePrompt" class="cake-prompt">YOUR CAKE IS READY 🎂</div>
+    <div class="cake-wrapper">
+      <img src="img/cake.jpg" id="cakeImg" class="cake-img" alt="Birthday Cake" />
+      <div id="cakeCandles" class="cake-candles">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+      <div id="cakeKnife" class="cake-knife">🔪</div>
+    </div>
+  </div>
+
+  <div id="transitionMsg" class="transition-msg" hidden>
+    There's a little more waiting for you... 💜
+  </div>
+</div>
+
+
+
+<!-- ══════════════════════════════════════════════════════
+     NAVIGATION
+     ══════════════════════════════════════════════════════ -->
+<header class="nav" id="nav" hidden>
+  <a href="#home" class="nav__brand">Vish 💜</a>
+  <button class="nav__burger" id="burger" type="button" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav__links" id="navLinks" aria-label="Sections">
+    <a href="#home">Home</a>
+    <a href="#letter">Letter</a>
+    <a href="#wish">Wish</a>
+    <a href="#memories">Memories</a>
+    <a href="#siva">Siva</a>
+    <a href="#your-message">Your Message</a>
+    <a href="#finale">Final</a>
+    <button class="nav__cta" id="bgOpen" type="button">✨ Make Your World</button>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════════════════════════
+     MAIN CONTENT
+     ══════════════════════════════════════════════════════ -->
+<main id="main" hidden>
+
+  <!-- ── HOME ──────────────────────────────────────────── -->
+  <section id="home" class="scene scene--home">
+    <div class="hero__body">
+      <div class="hero__year-badge reveal" data-d="0">
+        <span>✦</span>
+        <span id="yearBadgeTheme">First Chapter</span>
+        <span>✦</span>
+      </div>
+      <h1 class="hero__title reveal" data-d="100">
+        <span>HAPPY BIRTHDAY</span>
+        <span class="hero__name">Vish 💜</span>
+      </h1>
+      <p class="hero__sub reveal" data-d="200" id="heroSub">A birthday world made for you.</p>
+      <a href="#letter" class="scroll-cue reveal" data-d="350" aria-label="Keep going"></a>
+    </div>
+  </section>
+
+  <!-- ── LETTER ─────────────────────────────────────────── -->
+  <section id="letter" class="scene scene--letter">
+    <div class="scene__seam" aria-hidden="true"></div>
+
+    <p class="scene__kicker reveal">just for you</p>
+    <h2 class="scene__title reveal">A Little Letter <span class="scene__title-script">for you 💌</span></h2>
+
+    <div class="envelope reveal" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+      <div class="envelope__body">
+        <span class="envelope__back"></span>
+        <span class="envelope__paperpeek"></span>
+        <span class="envelope__front"></span>
+        <span class="envelope__flap"></span>
+        <span class="envelope__seal"><span>💜</span></span>
+      </div>
+      <p class="envelope__label">Open when you're ready.</p>
+    </div>
+
+    <div class="letter-card" id="letterCard">
+      <span class="letter-card__big" id="letterOpening">You're the Best.</span>
+      <div class="letter-card__text" id="letterText"></div>
+      <div class="letter-card__tools">
+        <button class="linkbtn" id="letterEditBtn" type="button">Edit this letter</button>
+        <button class="linkbtn" id="letterSaveBtn" type="button" hidden>Save</button>
+        <button class="linkbtn" id="letterCancelBtn" type="button" hidden>Cancel</button>
+        <button class="linkbtn" id="letterCloseBtn" type="button">Fold it away</button>
+      </div>
+      <textarea id="letterEdit" hidden aria-label="Edit letter" maxlength="3000" style="width:100%;min-height:200px;background:#f5f0ff;border:1px solid var(--accent);border-radius:6px;padding:0.8rem;font-family:var(--font-display);font-size:1rem;color:#2d1b69;margin-top:0.8rem;resize:vertical;"></textarea>
+    </div>
+  </section>
+
+  <!-- ── WISH ──────────────────────────────────────────── -->
+  <section id="wish" class="scene scene--wish">
+    <div class="scene__seam" aria-hidden="true"></div>
+    <div class="wish__aura" aria-hidden="true"></div>
+
+    <p class="scene__kicker reveal">your turn</p>
+    <h2 class="scene__title reveal">Today's Wish ✨</h2>
+    <p class="scene__sub reveal">Okay Vish... what do you wish for today?</p>
+
+    <div class="wishing reveal">
+      <div class="wish-card" id="wishCard">
+        <span class="wish-card__glow" aria-hidden="true"></span>
+        <p class="wish-card__text" id="wishPreview"></p>
+      </div>
+
+      <form class="wishform glass" id="wishForm" autocomplete="off">
+        <div class="field">
+          <label class="field__label" for="wishInput">Your wish</label>
+          <textarea id="wishInput" rows="5" maxlength="280" placeholder="Write your wish here..."></textarea>
+        </div>
+
+        <div class="wishform__actions">
+          <button type="submit" class="btn btn--primary" id="wishSave"><span>MAKE MY WISH ✨</span></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="wishwall" id="wishWall" hidden>
+      <div class="wishwall__list" id="wishList"></div>
+    </div>
+  </section>
+
+  <!-- ── MEMORIES ───────────────────────────────────────── -->
+  <section id="memories" class="scene scene--world">
+    <div class="scene__seam" aria-hidden="true"></div>
+
+    <p class="scene__kicker reveal">scattered, kept, loved</p>
+    <h2 class="scene__title reveal">Your Best Moments 📸</h2>
+    <p class="scene__sub reveal">Every photo you add lives here forever. Click one to step inside it.</p>
+
+    <div class="chips reveal" id="chips" role="tablist" aria-label="Filter memories"></div>
+
+    <div class="world" id="worldGrid">
+      <p class="empty-memories">Your memories will appear here. Add your first one below ↓</p>
+    </div>
+  </section>
+
+  <!-- ── ADD A MEMORY ──────────────────────────────────── -->
+  <section id="create" class="scene scene--create">
+    <div class="scene__seam" aria-hidden="true"></div>
+    <p class="scene__kicker reveal">the scrapbook table</p>
+    <h2 class="scene__title reveal">+ Add a Memory</h2>
+    <p class="scene__sub reveal">Everything you type shows up on the card live.</p>
+
+    <div class="maker reveal">
+      <div class="maker__stage">
+        <span class="maker__stageLabel">live preview</span>
+        <div class="polaroid polaroid--live" id="previewCard">
+          <div class="polaroid__frame">
+            <img id="previewImg" alt="" hidden />
+            <div id="previewEmpty" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#9b8ab0;font-size:0.8rem;text-align:center;padding:1rem;">your photo<br>lands here</div>
+          </div>
+          <div class="polaroid__body">
+            <p class="polaroid__caption" id="previewCap"></p>
+            <p class="polaroid__meta"><span id="previewDate">—</span></p>
+          </div>
+        </div>
+      </div>
+
+      <form class="maker__form" id="memoryForm" autocomplete="off">
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a photo">
+          <input type="file" id="fileInput" accept="image/*" hidden />
+          <span id="dropText">📷 Choose a photo</span>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="capInput">Caption</label>
+          <input type="text" id="capInput" maxlength="120" placeholder="A moment worth keeping forever" />
+        </div>
+        <div class="field">
+          <label class="field__label" for="labelInput">Year <em>optional</em></label>
+          <input type="text" id="labelInput" maxlength="28" placeholder="2026" />
+        </div>
+
+
+
+        <div class="maker__actions">
+          <button type="submit" class="btn btn--primary" id="saveBtn"><span>Add to the world</span></button>
+          <button type="button" class="btn btn--ghost" id="cancelBtn" hidden><span>Cancel</span></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="backup reveal">
+      <button type="button" class="linkbtn" id="exportBtn">Save a backup file</button>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <button type="button" class="linkbtn" id="importBtn">Restore from a backup</button>
+      <input type="file" id="importInput" accept="application/json,.json" hidden />
+    </div>
+  </section>
+
+  <!-- ── DOCTOR ─────────────────────────────────────────── -->
+  <section id="doctor" class="scene scene--doctor">
+    <div class="scene__seam" aria-hidden="true"></div>
+
+    <p class="scene__kicker reveal">a portrait letter</p>
+    <h2 class="scene__title reveal">To the Future <span class="scene__title-script">Dr. Vish 💜</span></h2>
+
+    <div class="doctor__inner reveal">
+      <div class="ekg" aria-hidden="true">
+        <svg viewBox="0 0 900 80" preserveAspectRatio="none">
+          <path class="ekg__trace" id="ekgPath" d="M0,40 H200 l10,0 l8,-30 l10,62 l9,-48 l8,16 H450 H620 l8,0 l7,-26 l10,54 l9,-40 l8,12 H900"/>
+        </svg>
+      </div>
+      <div class="doctor__letter-paper">
+        <span class="doctor__letter-title">To the future Dr. Vish</span>
+        <div class="doctor__letter-text" id="doctorLetterText"></div>
+      </div>
+      <p class="doctor__title">FUTURE DOCTOR 🩺</p>
+    </div>
+  </section>
+
+  <!-- ── SIVA SAYS ──────────────────────────────────────── -->
+  <section id="siva" class="scene scene--siva">
+    <div class="scene__seam" aria-hidden="true"></div>
+
+    <p class="scene__kicker reveal">siva wants to say something</p>
+    <h2 class="scene__title reveal">Okay, <span class="scene__title-script">my turn. 💜</span></h2>
+
+    <div class="siva__card reveal">
+      <p class="siva__label">— A message from Siva</p>
+      <p class="siva__opener">"Okay, now it's my turn."</p>
+      <p class="siva__message" id="sivaMessageText"></p>
+    </div>
+  </section>
+
+  <!-- ── DREAM ──────────────────────────────────────────── -->
+  <section id="dream" class="scene scene--dream">
+    <div class="scene__seam" aria-hidden="true"></div>
+
+    <div class="dream__stage" aria-hidden="true">
+      <div class="dream__spotlight"></div>
+    </div>
+
+    <p class="scene__kicker reveal">one more thing...</p>
+    <h2 class="scene__title reveal">There Was a Dream <span class="scene__title-script">I Once Had 💃</span></h2>
+
+    <div class="dream__card reveal">
+      <div class="dream__icon">🕺</div>
+      <p class="dream__text" id="sivaDreamText"></p>
+    </div>
+  </section>
+
+
+  <!-- ── YOUR MESSAGE ───────────────────────────────────── -->
+  <section id="your-message" class="scene scene--message">
+    <div class="scene__seam" aria-hidden="true"></div>
+
+    <p class="scene__kicker reveal">now it's your turn</p>
+    <h2 class="scene__title reveal">Would You Like to <span class="scene__title-script">Say Something? 💜</span></h2>
+    <p class="scene__sub reveal">Say whatever you want. I'll read it. 💜</p>
+
+    <div class="your-msg__layout reveal">
+      <div class="your-msg__card">
+        <p class="your-msg__card-label">live preview</p>
+        <p class="your-msg__preview" id="yourMsgPreview"></p>
+        <p class="your-msg__saved-note" id="yourMsgSavedNote"></p>
+      </div>
+
+      <form class="maker__form" id="yourMsgForm" autocomplete="off">
+        <div class="field">
+          <label class="field__label" for="yourMsgInput">Your message</label>
+          <textarea id="yourMsgInput" rows="6" maxlength="500" placeholder="Say whatever you want..."></textarea>
+        </div>
+
+        <div class="maker__actions">
+          <button type="submit" class="btn btn--primary"><span>SAVE MY MESSAGE 💜</span></button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ── FINALE ─────────────────────────────────────────── -->
+  <section id="finale" class="scene scene--finale">
+
+    <div class="finale__words">
+      <p class="finale__thank finale__fstep">Thank you for opening this 💜</p>
+      <p class="finale__fstep" style="font-size:1.1rem;color:var(--text-muted);">You made it all the way here.</p>
+      <h2 class="finale__best finale__fstep">YOU'RE THE BEST,<br>VISH. 💜</h2>
+      <p class="finale__doctor finale__fstep">And you're going to be an amazing doctor. 🩺</p>
+
+      <div class="finale__keep finale__fstep" id="finaleKeep">
+        <p>Keep going.</p>
+        <p>Keep dreaming.</p>
+        <p>Keep dancing.</p>
+        <p>Keep being you.</p>
+      </div>
+
+      <h3 class="finale__hb finale__fstep" id="finaleHb">HAPPY BIRTHDAY, VISH 💜</h3>
+      <p class="finale__fstep" id="finaleLine" style="font-size:1rem;color:var(--text-muted);font-style:italic;font-family:var(--font-display);"></p>
+    </div>
+
+    <div class="finale__actions">
+      <button type="button" class="btn btn--soft" id="topBtn"><span>Back to the top</span></button>
+      <button type="button" class="btn btn--primary" id="archiveBtn"><span>Our Birthday Archive 📚</span></button>
+    </div>
+  </section>
+
+  <!-- ── ARCHIVE ────────────────────────────────────────── -->
+  <section id="archive" class="scene scene--archive">
+    <div class="scene__seam" aria-hidden="true"></div>
+    <p class="scene__kicker reveal">every birthday, kept</p>
+    <h2 class="scene__title reveal">Our Birthday Archive 📚</h2>
+    <p class="scene__sub reveal">Every year, all your memories — never deleted.</p>
+    <div class="archive__timeline reveal" id="archiveTimeline"></div>
+  </section>
+
+</main><!-- /main -->
+
+<!-- ══════════════════════════════════════════════════════
+     FULLSCREEN MEMORY VIEWER
+     ══════════════════════════════════════════════════════ -->
+<div class="viewer" id="viewer" hidden>
+  <div class="viewer__scrim" id="vScrim"></div>
+  <div class="viewer__bg" id="vBg"></div>
+  <button class="viewer__close" id="vClose" aria-label="Close">&times;</button>
+  <button class="viewer__nav viewer__nav--prev" id="vPrev" aria-label="Previous">&#8249;</button>
+  <figure class="viewer__figure" id="vFigure">
+    <img id="vImg" alt="" />
+    <figcaption>
+      <p class="viewer__caption" id="vCap"></p>
+      <p class="viewer__meta"><span id="vDate"></span></p>
+    </figcaption>
+  </figure>
+  <button class="viewer__nav viewer__nav--next" id="vNext" aria-label="Next">&#8250;</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     BACKGROUND PANEL
+     ══════════════════════════════════════════════════════ -->
+<aside class="panel" id="bgPanel" aria-label="Make Your World">
+  <div class="panel__scrim" id="bgScrim"></div>
+  <div class="panel__sheet">
+    <div class="panel__head">
+      <h2>MAKE YOUR WORLD 💜</h2>
+      <button type="button" class="panel__close" id="bgClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="panel__body">
+      <div class="modes" id="bgModes" role="tablist">
+        <button type="button" class="mode is-on" data-mode="default">Original</button>
+        <button type="button" class="mode" data-mode="photo">My photo</button>
+        <button type="button" class="mode" data-mode="gradient">Gradient</button>
+      </div>
+      <div class="panel__block" id="bgPhotoBlock" hidden>
+        <div class="drop drop--sm" id="bgDrop" tabindex="0" role="button" aria-label="Choose background">
+          <input type="file" id="bgFile" accept="image/*" hidden />
+          <span id="bgDropText">📷 Choose a photo</span>
+        </div>
+      </div>
+      <div class="panel__block" id="bgGradientBlock" hidden>
+        <div class="grads" id="bgGrads"></div>
+      </div>
+      <div class="panel__block" id="bgControls" hidden>
+        <label class="slider">
+          <span>Brightness <b id="bgBrightVal">100%</b></span>
+          <input type="range" id="bgBright" min="20" max="140" value="100" />
+        </label>
+        <label class="slider">
+          <span>Blur <b id="bgBlurVal">6px</b></span>
+          <input type="range" id="bgBlur" min="0" max="30" value="6" />
+        </label>
+        <label class="slider">
+          <span>Overlay <b id="bgVeilVal">55%</b></span>
+          <input type="range" id="bgVeil" min="0" max="92" value="55" />
+        </label>
+        <label class="slider">
+          <span>Zoom <b id="bgZoomVal">100%</b></span>
+          <input type="range" id="bgZoom" min="100" max="220" value="100" />
+        </label>
+      </div>
+      <div class="panel__foot">
+        <button type="button" class="btn btn--soft" id="bgReset"><span>Reset Background</span></button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Help button -->
+<button class="help-btn" id="helpBtn" type="button">? How This Works</button>
+<div class="help-modal" id="helpModal">
+  <div class="help-modal__content">
+    <button class="help-modal__close" id="helpClose" type="button">&times;</button>
+    <h3>How This Works 💜</h3>
+    <ul>
+      <li><b>1</b> Watch the fireworks opening 🎆</li>
+      <li><b>2</b> Open your letter 💌</li>
+      <li><b>3</b> Make a wish ✨</li>
+      <li><b>4</b> Add your memories 📸</li>
+      <li><b>5</b> Read the message from Siva 💜</li>
+      <li><b>6</b> Say something back 💬</li>
+      <li><b>7</b> Enjoy the ending 🎊</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- Audio elements removed -->
+<!-- ══════════════════════════════════════════════════════
+     PERSONAL CONFIGURATION (loaded first)
+     ══════════════════════════════════════════════════════ -->
+<script src="js/config.js"></script>
+
+<!-- ══════════════════════════════════════════════════════
+     ALL APPLICATION CODE (inlined for file:// compat)
+     ══════════════════════════════════════════════════════ -->
+<script>
+(function () {
+'use strict';
+
+/* ─────────────────────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+function rand(a, b) { return a + Math.random() * (b - a); }
+function randInt(a, b) { return Math.floor(rand(a, b + 1)); }
+function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+function debounce(fn, ms) {
+  let t;
+  return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
+}
+
+/* ─────────────────────────────────────────────────────────
+   YEARLY SYSTEM
+───────────────────────────────────────────────────────── */
+const CFG = window.VISH_CFG;
+
+function getBirthdayYear() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const configuredYears = Object.keys(CFG.years).map(Number);
+  const firstConfigured = Math.min(...configuredYears);
+  // Use the calendar year as the edition year (clamped to first configured)
+  return Math.max(year, firstConfigured);
+}
+
+function getYearCfg(year) {
+  if (CFG.years[year]) return CFG.years[year];
+  // Fallback for future years: derive from last configured
+  const configuredYears = Object.keys(CFG.years).map(Number).sort((a,b) => a - b);
+  const lastCfg = CFG.years[configuredYears[configuredYears.length - 1]];
+  const n = year - 2025;
+  return {
+    ...lastCfg,
+    theme:          `Year ${n}`,
+    archiveName:    `Year ${n}`,
+    openingLine:    'Still here, still making this for you.',
+    heroSub:        'Another year, another edition.',
+    letterOpening:  'Still showing up for you.',
+    finalLine:      'Still going. Still dreaming. Still you.',
+    finalSub:       'Keep becoming who you\'re meant to be.',
+  };
+}
+
+const CURRENT_YEAR = getBirthdayYear();
+const YEAR_CFG = getYearCfg(CURRENT_YEAR);
+
+function applyYearTheme() {
+  document.body.setAttribute('data-year', CURRENT_YEAR);
+  const r = document.documentElement.style;
+  r.setProperty('--accent',       YEAR_CFG.accent);
+  r.setProperty('--accent-light', YEAR_CFG.accentLight);
+  r.setProperty('--accent-soft',  YEAR_CFG.accentSoft);
+  r.setProperty('--accent-glow',  YEAR_CFG.accentGlow);
+  r.setProperty('--shadow-glow',  `0 0 40px ${YEAR_CFG.accentGlow}`);
+
+  // Set year badge
+  const badge = $('yearBadgeTheme');
+  if (badge) badge.textContent = YEAR_CFG.theme;
+
+  // Set hero sub
+  const heroSub = $('heroSub');
+  if (heroSub) heroSub.textContent = YEAR_CFG.heroSub;
+
+  // Set letter opening
+  const lo = $('letterOpening');
+  if (lo) lo.textContent = YEAR_CFG.letterOpening;
+
+  // Set finale
+  const fl = $('finaleLine');
+  if (fl) fl.textContent = YEAR_CFG.finalLine;
+
+  // Set tagline in opening
+  const tag = $('openingTagline');
+  if (tag) tag.textContent = YEAR_CFG.openingLine;
+
+  // Set personal content
+  const letterText = $('letterText');
+  if (letterText) {
+    const saved = localStorage.getItem('vish_letter');
+    letterText.textContent = saved || CFG.letterText;
+  }
+
+  const sivaMsg = $('sivaMessageText');
+  if (sivaMsg) sivaMsg.textContent = CFG.sivaMessage;
+
+}
+
+/* ─────────────────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────────────────── */
+let toastTimer = null;
+function showToast(msg, type = '') {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' is-' + type : '');
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
+}
+
+/* ─────────────────────────────────────────────────────────
+   DATABASE (IndexedDB)
+───────────────────────────────────────────────────────── */
+const DB = (function () {
+  const NAME = 'vishbday_v2';
+  const VER  = 1;
+  let _db = null;
+
+  function open() {
+    if (_db) return Promise.resolve(_db);
+    return new Promise((res, rej) => {
+      const req = indexedDB.open(NAME, VER);
+      req.onupgradeneeded = e => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains('memories')) {
+          const s = d.createObjectStore('memories', { keyPath: 'id' });
+          s.createIndex('year', 'year');
+        }
+        if (!d.objectStoreNames.contains('config')) {
+          d.createObjectStore('config', { keyPath: 'k' });
+        }
+      };
+      req.onsuccess = e => { _db = e.target.result; res(_db); };
+      req.onerror   = e => rej(e.target.error);
+    });
+  }
+
+  function tx(store, mode, cb) {
+    return open().then(d => new Promise((res, rej) => {
+      const t = d.transaction(store, mode);
+      const s = t.objectStore(store);
+      const req = cb(s);
+      req.onsuccess = () => res(req.result);
+      req.onerror   = () => rej(req.error);
+    }));
+  }
+
+  return {
+    getAll: (year) => open().then(d => new Promise((res, rej) => {
+      const t = d.transaction('memories', 'readonly');
+      const s = t.objectStore('memories');
+      const req = year != null ? s.index('year').getAll(String(year)) : s.getAll();
+      req.onsuccess = () => res(req.result);
+      req.onerror   = () => rej(req.error);
+    })),
+    put:    (mem)  => tx('memories', 'readwrite', s => s.put(mem)),
+    del:    (id)   => tx('memories', 'readwrite', s => s.delete(id)),
+    getAllYears: () => open().then(d => new Promise((res, rej) => {
+      const t = d.transaction('memories', 'readonly');
+      const s = d.objectStore('memories').getAll();
+      s.onsuccess = () => {
+        const years = [...new Set(s.result.map(m => m.year))].sort((a,b)=>b-a);
+        res(years);
+      };
+      s.onerror = () => rej(s.error);
+    })),
+    getCfg: k      => tx('config', 'readonly',  s => s.get(k)).then(r => r ? r.v : null),
+    setCfg: (k, v) => tx('config', 'readwrite', s => s.put({ k, v })),
+  };
+})();
+
+/* ─────────────────────────────────────────────────────────
+   FIREBASE (optional)
+───────────────────────────────────────────────────────── */
+let fbDB = null;
+function initFirebase() {
+  try {
+    const fc = CFG.firebaseConfig;
+    if (!fc || !fc.apiKey) return;
+    if (!firebase || !firebase.app) return;
+    if (!firebase.apps.length) firebase.initializeApp(fc);
+    fbDB = firebase.firestore();
+  } catch (e) { /* no cloud */ }
+}
+
+function shareToCreator(collection, data) {
+  if (!fbDB || !navigator.onLine) return Promise.resolve(false);
+  return fbDB.collection(collection).add({ ...data, ts: Date.now() })
+    .then(() => true).catch(() => false);
+}
+
+/* ─────────────────────────────────────────────────────────
+   IMAGE UTILITIES
+───────────────────────────────────────────────────────── */
+function compressImage(file, maxPx = 1200, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    if (file.size > 15 * 1024 * 1024) { reject(new Error('File too large (max 15MB)')); return; }
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = e => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        let { width: w, height: h } = img;
+        const ratio = Math.min(maxPx / w, maxPx / h, 1);
+        w = Math.round(w * ratio); h = Math.round(h * ratio);
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ─────────────────────────────────────────────────────────
+   CURSOR GLOW
+───────────────────────────────────────────────────────── */
+function initCursorGlow() {
+  const el = $('cursorGlow');
+  let rafPending = false, cx = 0, cy = 0;
+  window.addEventListener('pointermove', e => {
+    cx = e.clientX; cy = e.clientY;
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(() => {
+        el.style.transform = `translate(calc(${cx}px - 50%), calc(${cy}px - 50%))`;
+        el.classList.add('is-active');
+        rafPending = false;
+      });
+    }
+  }, { passive: true });
+}
+
+/* ─────────────────────────────────────────────────────────
+   AMBIENT PARTICLES (dust canvas)
+───────────────────────────────────────────────────────── */
+const DUST = (function () {
+  const canvas = $('dustCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W = 0, H = 0, particles = [], rafId = null;
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', debounce(resize, 150), { passive: true });
+  resize();
+
+  const COUNT = window.innerWidth < 768 ? 40 : 80;
+
+  function createParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: rand(0.5, 2.5),
+      vy: rand(-0.4, -0.1),
+      vx: rand(-0.15, 0.15),
+      a: rand(0.1, 0.6),
+      life: 1,
+      decay: rand(0.002, 0.006),
+    };
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    while (particles.length < COUNT) particles.push(createParticle());
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      p.life -= p.decay;
+      if (p.life <= 0 || p.y < -10) { particles.splice(i, 1); continue; }
+
+      ctx.save();
+      ctx.globalAlpha = p.a * p.life;
+      ctx.fillStyle = YEAR_CFG.accentLight;
+      ctx.shadowColor = YEAR_CFG.accentLight;
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    rafId = requestAnimationFrame(loop);
+  }
+
+  return {
+    start: () => { if (!rafId) loop(); },
+    stop:  () => { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } },
+  };
+})();
+
+/* ─────────────────────────────────────────────────────────
+   FIREWORKS ENGINE
+───────────────────────────────────────────────────────── */
+const FW = (function () {
+  const canvas = $('fxCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W = 0, H = 0, rockets = [], particles = [], rafId = null, running = false;
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', debounce(resize, 150), { passive: true });
+  resize();
+
+  const isMobile = window.innerWidth < 768;
+  const palette  = YEAR_CFG.fireworkPalette;
+
+  class Rocket {
+    constructor() {
+      this.x  = rand(W * 0.15, W * 0.85);
+      this.y  = H + 10;
+      this.tx = rand(W * 0.1,  W * 0.9);
+      this.ty = rand(H * 0.08, H * 0.45);
+      const dist = Math.hypot(this.tx - this.x, this.ty - this.y);
+      const ang  = Math.atan2(this.ty - this.y, this.tx - this.x);
+      const spd  = clamp(dist / 40, 10, 18);
+      this.vx = Math.cos(ang) * spd;
+      this.vy = Math.sin(ang) * spd;
+      this.trail = [];
+      this.color = palette[randInt(0, palette.length - 1)];
+      this.dist  = dist;
+      this.gone  = 0;
+      this.dead  = false;
+    }
+
+    update() {
+      this.trail.push({ x: this.x, y: this.y, a: 0.8 });
+      if (this.trail.length > 18) this.trail.shift();
+      this.trail.forEach(t => t.a *= 0.87);
+      this.x += this.vx; this.y += this.vy;
+      this.vy += 0.15;
+      this.gone += Math.hypot(this.vx, this.vy);
+      if (this.gone >= this.dist) { this.explode(); this.dead = true; }
+    }
+
+    draw() {
+      this.trail.forEach((t, i) => {
+        const s = (i / this.trail.length) * 2;
+        ctx.save(); ctx.globalAlpha = t.a * 0.5;
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color; ctx.shadowBlur = 6;
+        ctx.beginPath(); ctx.arc(t.x, t.y, s, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+      ctx.save(); ctx.globalAlpha = 1;
+      ctx.fillStyle = '#fff'; ctx.shadowColor = this.color; ctx.shadowBlur = 16;
+      ctx.beginPath(); ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    explode() {
+      const n = isMobile ? 50 : 80;
+      for (let i = 0; i < n; i++) {
+        const ang  = (i / n) * Math.PI * 2;
+        const spd  = rand(1.5, 6);
+        const col  = palette[randInt(0, palette.length - 1)];
+        particles.push(new Particle(this.x, this.y, Math.cos(ang) * spd, Math.sin(ang) * spd, col, false));
+      }
+      // Sparkle burst
+      for (let i = 0; i < (isMobile ? 12 : 22); i++) {
+        const ang = rand(0, Math.PI * 2);
+        const spd = rand(0.5, 9);
+        particles.push(new Particle(this.x, this.y, Math.cos(ang) * spd, Math.sin(ang) * spd, '#fff', true));
+      }
+    }
+  }
+
+  class Particle {
+    constructor(x, y, vx, vy, color, sparkle) {
+      this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+      this.color = color; this.sparkle = sparkle;
+      this.life  = rand(0.7, 1);
+      this.decay = rand(0.008, 0.02);
+      this.size  = sparkle ? rand(1, 2) : rand(1.5, 3.5);
+    }
+    update() {
+      this.vx *= 0.97; this.vy *= 0.97; this.vy += 0.07;
+      this.x += this.vx; this.y += this.vy;
+      this.life -= this.decay;
+      return this.life > 0;
+    }
+    draw() {
+      ctx.save(); ctx.globalAlpha = Math.max(0, this.life);
+      ctx.fillStyle = this.color;
+      if (!this.sparkle) { ctx.shadowColor = this.color; ctx.shadowBlur = 8; }
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.size * Math.max(0.1, this.life), 0, Math.PI * 2);
+      ctx.fill(); ctx.restore();
+    }
+  }
+
+  function loop() {
+    ctx.fillStyle = 'rgba(4,1,12,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    rockets = rockets.filter(r => { if (!r.dead) { r.update(); r.draw(); } return !r.dead; });
+    particles = particles.filter(p => { const alive = p.update(); if (alive) p.draw(); return alive; });
+
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function launch() { if (running) rockets.push(new Rocket()); }
+
+  function start(onDone) {
+    running = true;
+    ctx.clearRect(0, 0, W, H);
+
+    // Launch schedule (ms)
+    const schedule = [
+      0, 350, 700, 1100, 1500, 1900, 2200, 2500, 2800, 3050,
+      3250, 3400, 3550, 3680, 3780, 3870, 3950, 4020,
+      // Grand finale
+      4200, 4250, 4300, 4350, 4400, 4440, 4480,
+    ];
+    schedule.forEach(t => setTimeout(launch, t));
+    loop();
+    if (onDone) setTimeout(onDone, 5600);
+  }
+
+  function stop() {
+    running = false;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    ctx.clearRect(0, 0, W, H);
+  }
+
+  function burst(x, y, n = 60) {
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2;
+      const spd = rand(2, 7);
+      const col = palette[randInt(0, palette.length - 1)];
+      particles.push(new Particle(x, y, Math.cos(ang) * spd, Math.sin(ang) * spd, col, false));
+    }
+    if (!rafId) { loop(); }
+  }
+
+  return { start, stop, burst };
+})();
+
+/* ─────────────────────────────────────────────────────────
+   OPENING MOVIE
+───────────────────────────────────────────────────────── */
+async function runOpeningMovie() {
+  const opening     = $('opening');
+  const openingText = $('openingText');
+  const charHero    = $('charHero');
+  const photoMoment = $('photoMoment');
+  const cameraFlash = $('cameraFlash');
+  const photoPrompt = $('photoPrompt');
+  const photoFrame  = $('photoFrame');
+  const photoUpload = $('photoUpload');
+  const photoImg    = $('photoImg');
+  const photoReaction = $('photoReaction');
+  const cakeScene   = $('cakeScene');
+  const cakePrompt  = $('cakePrompt');
+  const cakeWrapper = document.querySelector('.cake-wrapper');
+  const cakeCandles = $('cakeCandles');
+  const cakeKnife   = $('cakeKnife');
+  const transitionMsg = $('transitionMsg');
+  const isMobile    = window.innerWidth < 768;
+
+  // Ensure scrolling is locked during the opening
+  document.body.classList.add('is-locked');
+
+  // Scene 1: Stars + fireworks + HAPPY BIRTHDAY VISH
+  FW.start(null);
+  DUST.start();
+  await wait(4400); // let fireworks build
+  openingText.classList.add('is-visible');
+  await wait(3800);
+  openingText.classList.add('is-out');
+  await wait(1000);
+
+  // Scene 2: Cartoon character arrives
+  charHero.hidden = false;
+  // Trigger reflow
+  void charHero.offsetWidth;
+  charHero.classList.add('is-arriving');
+  await wait(1500);
+
+  // Scene 3: Photo moment
+  photoMoment.hidden = false;
+  photoPrompt.classList.add('is-visible');
+  await wait(1500);
+
+  photoPrompt.classList.remove('is-visible');
+  await wait(800);
+  
+  // Camera flash
+  cameraFlash.hidden = false;
+  FW.burst(window.innerWidth/2, window.innerHeight/2, 100);
+  await wait(100);
+  cameraFlash.style.opacity = '0';
+  setTimeout(() => {
+    cameraFlash.hidden = true;
+    cameraFlash.style.opacity = '1';
+  }, 800);
+  
+  photoFrame.hidden = false;
+  // trigger reflow
+  void photoFrame.offsetWidth;
+  photoFrame.classList.add('is-visible');
+
+  // Handle photo upload (local only)
+  photoUpload.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = ev => photoImg.src = ev.target.result;
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Wait for user to interact or skip after 8s
+  await Promise.race([
+    wait(8000),
+    new Promise(resolve => photoUpload.addEventListener('change', () => setTimeout(resolve, 1500), {once:true}))
+  ]);
+
+  // Scene 4: Funny photo reaction
+  photoFrame.classList.remove('is-visible');
+  await wait(800);
+  photoFrame.hidden = true;
+  charHero.classList.add('is-dancing');
+  photoReaction.classList.add('is-visible');
+  FW.burst(window.innerWidth/2, window.innerHeight - 200, 40);
+  await wait(2000);
+  photoReaction.classList.remove('is-visible');
+  charHero.classList.remove('is-dancing');
+  await wait(1000);
+  
+  // Scene 5: Cake arrives
+  photoMoment.hidden = true;
+  charHero.classList.remove('is-arriving');
+  await wait(1000); // disappears
+  
+  // Character returns struggling with cake
+  charHero.classList.add('is-struggling', 'is-arriving');
+  await wait(1500);
+  
+  cakeScene.hidden = false;
+  cakePrompt.classList.add('is-visible');
+  charHero.classList.remove('is-struggling');
+  cakeWrapper.classList.add('is-visible');
+  
+  await wait(2000);
+  cakePrompt.classList.remove('is-visible');
+  await wait(1000);
+
+  // Scene 6: Make a wish
+  cakePrompt.textContent = 'MAKE A WISH ✨';
+  cakePrompt.classList.add('is-visible');
+  
+  // User interaction: Tap cake to blow candles
+  await new Promise(resolve => {
+    const h = () => {
+      cakeWrapper.removeEventListener('pointerdown', h);
+      cakeWrapper.removeEventListener('click', h);
+      // blow candles
+      const flames = cakeCandles.querySelectorAll('.flame');
+      flames.forEach(f => f.style.opacity = '0');
+      FW.burst(window.innerWidth/2, window.innerHeight/2 - 50, isMobile ? 15 : 30);
+      resolve();
+    };
+    cakeWrapper.addEventListener('pointerdown', h);
+    cakeWrapper.addEventListener('click', h); // fallback
+  });
+
+  cakePrompt.classList.remove('is-visible');
+  await wait(800);
+  cakePrompt.textContent = 'WISH MADE ✨';
+  cakePrompt.classList.add('is-visible');
+  await wait(1500);
+  cakePrompt.classList.remove('is-visible');
+  await wait(800);
+
+  // Scene 7: Cake cutting
+  cakePrompt.textContent = 'NOW CUT THE CAKE 🎂';
+  cakePrompt.classList.add('is-visible');
+  
+  await new Promise(resolve => {
+    const h = () => {
+      cakeWrapper.removeEventListener('pointerdown', h);
+      cakeWrapper.removeEventListener('click', h);
+      cakeWrapper.classList.add('is-cut');
+      setTimeout(() => {
+        cakeWrapper.classList.add('is-cut-done');
+        FW.burst(window.innerWidth/2, window.innerHeight/2, isMobile ? 40 : 80);
+        setTimeout(resolve, 1500);
+      }, 600);
+    };
+    cakeWrapper.addEventListener('pointerdown', h);
+    cakeWrapper.addEventListener('click', h); // fallback
+  });
+
+  cakePrompt.classList.remove('is-visible');
+  await wait(500);
+  cakePrompt.textContent = 'CAKE CUT! 💜';
+  cakePrompt.classList.add('is-visible');
+  
+  // Scene 8: Cartoon Celebration
+  charHero.classList.add('is-dancing');
+  await wait(3000);
+  cakePrompt.classList.remove('is-visible');
+  charHero.classList.remove('is-dancing');
+  charHero.classList.remove('is-arriving');
+  cakeWrapper.classList.remove('is-visible');
+  await wait(1000);
+
+  // Scene 9: Transition
+  cakeScene.hidden = true;
+  transitionMsg.hidden = false;
+  // reflow
+  void transitionMsg.offsetWidth;
+  transitionMsg.classList.add('is-visible');
+  await wait(3000);
+  transitionMsg.classList.remove('is-visible');
+  opening.classList.add('is-fading');
+  
+  await wait(1000);
+  transitionMsg.hidden = true;
+  opening.hidden = true;
+  opening.style.pointerEvents = 'none'; // Ensure clicks pass through!
+  FW.stop();
+
+  // Unlock scrolling
+  document.body.classList.remove('is-locked');
+  revealWebsite();
+}
+
+function revealWebsite() {
+  const nav    = $('nav');
+  const main   = $('main');
+
+  nav.hidden    = false;
+  main.hidden   = false;
+
+  requestAnimationFrame(() => {
+    nav.classList.add('is-in');
+    initScrollReveals();
+  });
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCROLL REVEALS
+───────────────────────────────────────────────────────── */
+function initScrollReveals() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = parseInt(e.target.dataset.d || 0);
+        setTimeout(() => e.target.classList.add('is-visible'), delay);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  $$('.reveal').forEach(el => io.observe(el));
+
+  // Finale steps trigger
+  const finaleIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const steps = $$('.finale__fstep');
+        steps.forEach((s, i) => setTimeout(() => s.classList.add('is-visible'), i * 300 + 100));
+        const keep = $('finaleKeep');
+        if (keep) { setTimeout(() => keep.classList.add('is-visible'), steps.length * 300 + 100); }
+        finaleIO.unobserve(e.target);
+        // Trigger finale fireworks
+        setTimeout(() => {
+          const W = window.innerWidth, H = window.innerHeight;
+          FW.burst(W * 0.25, H * 0.4, 50);
+          setTimeout(() => FW.burst(W * 0.75, H * 0.5, 50), 400);
+          setTimeout(() => FW.burst(W * 0.5,  H * 0.3, 70), 800);
+        }, 1500);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const finale = $('finale');
+  if (finale) finaleIO.observe(finale);
+
+  // EKG animation
+  const ekgIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        $('ekgPath').classList.add('is-drawing');
+        ekgIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  const ekgEl = $('ekgPath');
+  if (ekgEl) ekgIO.observe(ekgEl);
+
+  // Nav active state
+  const sections = $$('section[id]');
+  const navLinks = $$('.nav__links a');
+  const navIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.getAttribute('id');
+        navLinks.forEach(a => {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -40% 0px' });
+  sections.forEach(s => navIO.observe(s));
+}
+
+/* ─────────────────────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────────────────────── */
+function initNav() {
+  const burger    = $('burger');
+  const navLinks  = $('navLinks');
+  const bgOpen    = $('bgOpen');
+  const helpBtn   = $('helpBtn');
+  const helpModal = $('helpModal');
+  const helpClose = $('helpClose');
+  const topBtn    = $('topBtn');
+  const archiveBtn = $('archiveBtn');
+
+  // Burger menu
+  burger && burger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('is-open');
+    burger.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+
+  // Close menu on nav link click
+  $$('.nav__links a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('is-open');
+      burger.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Background panel
+  bgOpen && bgOpen.addEventListener('click', openBgPanel);
+
+  // Help modal
+  helpBtn  && helpBtn.addEventListener('click',  () => { helpModal.classList.add('is-open'); });
+  helpClose && helpClose.addEventListener('click', () => { helpModal.classList.remove('is-open'); });
+  helpModal && helpModal.addEventListener('click', e => { if (e.target === helpModal) helpModal.classList.remove('is-open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') helpModal.classList.remove('is-open'); });
+
+  // Back to top
+  topBtn && topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Archive shortcut
+  archiveBtn && archiveBtn.addEventListener('click', () => {
+    $('archive').scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+
+
+/* ─────────────────────────────────────────────────────────
+   LETTER
+───────────────────────────────────────────────────────── */
+function initLetter() {
+  const envelope   = $('envelope');
+  const letterCard = $('letterCard');
+  const textEl     = $('letterText');
+  const editBtn    = $('letterEditBtn');
+  const saveBtn    = $('letterSaveBtn');
+  const cancelBtn  = $('letterCancelBtn');
+  const closeBtn   = $('letterCloseBtn');
+  const editTA     = $('letterEdit');
+
+  // Open envelope
+  function openLetter() {
+    envelope.classList.add('is-open');
+    setTimeout(() => {
+      envelope.style.display = 'none';
+      letterCard.classList.add('is-visible');
+    }, 900);
+  }
+
+  envelope && envelope.addEventListener('click', openLetter);
+  envelope && envelope.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openLetter(); });
+
+  // Close
+  closeBtn && closeBtn.addEventListener('click', () => {
+    letterCard.classList.remove('is-visible');
+    setTimeout(() => {
+      envelope.style.display = '';
+      envelope.classList.remove('is-open');
+    }, 300);
+  });
+
+  // Edit
+  editBtn && editBtn.addEventListener('click', () => {
+    editTA.value = textEl.textContent;
+    editTA.hidden = false;
+    textEl.style.display = 'none';
+    editBtn.hidden = true;
+    saveBtn.hidden = false;
+    cancelBtn.hidden = false;
+  });
+
+  saveBtn && saveBtn.addEventListener('click', () => {
+    const v = editTA.value.trim();
+    textEl.textContent = v;
+    localStorage.setItem('vish_letter', v);
+    exitEdit();
+    showToast('Letter saved 💜', 'success');
+  });
+
+  cancelBtn && cancelBtn.addEventListener('click', exitEdit);
+
+  function exitEdit() {
+    editTA.hidden = true;
+    textEl.style.display = '';
+    editBtn.hidden = false;
+    saveBtn.hidden = true;
+    cancelBtn.hidden = true;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   WISH
+───────────────────────────────────────────────────────── */
+function initWish() {
+  const input   = $('wishInput');
+  const preview = $('wishPreview');
+  const form    = $('wishForm');
+  const wall    = $('wishWall');
+  const list    = $('wishList');
+
+  // Live preview
+  input && input.addEventListener('input', () => { preview.textContent = input.value; });
+
+  // Load saved wishes
+  DB.getCfg('wishes_' + CURRENT_YEAR).then(w => {
+    if (w && w.length) { renderWishes(w); wall.hidden = false; }
+  });
+
+  // Submit
+  form && form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) { showToast('Write your wish first ✨'); return; }
+
+    // Particle animation
+    wishParticleAnimation();
+
+    // Save
+    const existing = await DB.getCfg('wishes_' + CURRENT_YEAR) || [];
+    const entry = { text, year: CURRENT_YEAR, ts: Date.now() };
+    existing.push(entry);
+    await DB.setCfg('wishes_' + CURRENT_YEAR, existing);
+
+    // Share?
+    if ($('shareWishToggle').checked) {
+      const shared = await shareToCreator('wishes', { text, year: CURRENT_YEAR });
+      showToast(shared ? 'Wish saved & shared with Siva 💜' : 'Wish saved locally 💜', 'success');
+    } else {
+      showToast('Wish saved. 💜', 'success');
+    }
+
+    renderWishes(existing);
+    wall.hidden = false;
+    input.value = '';
+    preview.textContent = '';
+  });
+
+  function renderWishes(wishes) {
+    list.innerHTML = '';
+    wishes.slice().reverse().forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'wish-entry';
+      div.innerHTML = `<p>${w.text}</p><p class="wish-entry__meta">${w.year || CURRENT_YEAR}</p>`;
+      list.appendChild(div);
+    });
+  }
+
+  function wishParticleAnimation() {
+    const card = $('wishCard');
+    const rect = card.getBoundingClientRect();
+    const cx   = rect.left + rect.width / 2;
+    const cy   = rect.top  + rect.height / 2;
+    FW.burst(cx, cy, 40);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   MEMORIES
+───────────────────────────────────────────────────────── */
+let currentMemories = [];
+let currentFilter   = null; // null = all years
+
+function initMemories() {
+  const fileInput   = $('fileInput');
+  const drop        = $('drop');
+  const capInput    = $('capInput');
+  const labelInput  = $('labelInput');
+  const previewImg  = $('previewImg');
+  const previewCap  = $('previewCap');
+  const previewDate = $('previewDate');
+  const previewEmpty = $('previewEmpty');
+  const form        = $('memoryForm');
+  const cancelBtn   = $('cancelBtn');
+  const saveBtn     = $('saveBtn');
+  const exportBtn   = $('exportBtn');
+  const importBtn   = $('importBtn');
+  const importInput = $('importInput');
+  const defaultDateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  if (previewDate) previewDate.textContent = defaultDateStr;
+
+  // Live preview
+  capInput   && capInput.addEventListener('input',   () => { previewCap.textContent  = capInput.value; });
+  labelInput && labelInput.addEventListener('input', () => { previewDate.textContent = labelInput.value || defaultDateStr; });
+
+  // File pick
+  drop && drop.addEventListener('click', () => fileInput.click());
+  drop && drop.addEventListener('dragover',  e => { e.preventDefault(); drop.classList.add('is-dragover'); });
+  drop && drop.addEventListener('dragleave', () => drop.classList.remove('is-dragover'));
+  drop && drop.addEventListener('drop', e => {
+    e.preventDefault(); drop.classList.remove('is-dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) handleFile(file);
+  });
+
+  fileInput && fileInput.addEventListener('change', ({ target: { files } }) => {
+    if (files[0]) handleFile(files[0]);
+  });
+
+  async function handleFile(file) {
+    try {
+      const data = await compressImage(file, 1200, 0.82);
+      previewImg.src    = data;
+      previewImg.hidden = false;
+      if (previewEmpty) previewEmpty.hidden = true;
+      cancelBtn.hidden  = false;
+      showToast('Photo ready 📸', 'success');
+    } catch (err) {
+      showToast(err.message || 'Could not load that image', 'error');
+    }
+  }
+
+  // Cancel
+  cancelBtn && cancelBtn.addEventListener('click', resetForm);
+  function resetForm() {
+    form.reset();
+    previewImg.src = ''; previewImg.hidden = true;
+    if (previewEmpty) previewEmpty.hidden = false;
+    previewCap.textContent = ''; previewDate.textContent = defaultDateStr;
+    cancelBtn.hidden = true;
+    saveBtn.querySelector('span').textContent = 'Add to the world';
+    form.dataset.editing = '';
+  }
+
+  // Submit
+  form && form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!previewImg.src || previewImg.src === window.location.href) {
+      showToast('Please add a photo 📷'); return;
+    }
+    const userLabel = labelInput.value.trim();
+    const mem = {
+      id:      form.dataset.editing || ('mem_' + Date.now()),
+      image:   previewImg.src,
+      caption: capInput.value.trim(),
+      year:    userLabel || String(CURRENT_YEAR),
+      displayDate: userLabel || defaultDateStr,
+      rot:     rand(-8, 8),
+      ts:      Date.now(),
+    };
+    await DB.put(mem);
+
+    if ($('shareMemoryToggle').checked) {
+      if (!navigator.onLine) showToast("You're offline. Saved locally 💜", 'success');
+      else {
+        const ok = await shareToCreator('memories', { id: mem.id, caption: mem.caption, year: mem.year });
+        showToast(ok ? 'Memory saved & shared 💜' : 'Memory saved locally 💜', 'success');
+      }
+    } else {
+      showToast('Memory saved 💜', 'success');
+    }
+
+    resetForm();
+    await renderMemories(currentFilter);
+  });
+
+  // Export backup
+  exportBtn && exportBtn.addEventListener('click', async () => {
+    try {
+      const mems = await DB.getAll(null);
+      const wishes = await DB.getCfg('wishes_' + CURRENT_YEAR) || [];
+      const yourMsg = localStorage.getItem('vish_yourmsg') || '';
+      const letter  = localStorage.getItem('vish_letter')  || '';
+      const dataStr = JSON.stringify({ memories: mems, wishes, yourMsg, letter, ts: Date.now(), version: 2 });
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Vish_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      showToast('Backup saved 💜', 'success');
+    } catch (err) { 
+      console.error('Backup error:', err);
+      showToast('Backup failed', 'error'); 
+    }
+  });
+
+  // Import backup
+  importBtn   && importBtn.addEventListener('click', () => importInput.click());
+  importInput && importInput.addEventListener('change', ({ target: { files } }) => {
+    const file = files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async ({ target: { result } }) => {
+      try {
+        const data = JSON.parse(result);
+        if (!data.memories) throw new Error('Invalid backup file');
+        for (const m of data.memories) await DB.put(m);
+        if (data.yourMsg) localStorage.setItem('vish_yourmsg', data.yourMsg);
+        if (data.letter)  localStorage.setItem('vish_letter',  data.letter);
+        showToast(`Restored ${data.memories.length} memories 💜`, 'success');
+        await renderMemories(currentFilter);
+      } catch (err) { showToast('Could not restore backup', 'error'); }
+    };
+    reader.onerror = () => showToast('Could not read file', 'error');
+    reader.readAsText(file);
+    importInput.value = '';
+  });
+
+  // Year filter chips
+  renderChips();
+}
+
+async function renderChips() {
+  const chips = $('chips');
+  if (!chips) return;
+
+  const all  = await DB.getAll(null);
+  const years = [...new Set(all.map(m => m.year))].sort((a, b) => b - a);
+  chips.innerHTML = '';
+
+  const allBtn = document.createElement('button');
+  allBtn.className = 'chip' + (!currentFilter ? ' is-active' : '');
+  allBtn.textContent = 'All Years';
+  allBtn.addEventListener('click', async () => {
+    currentFilter = null;
+    $$('.chip').forEach(c => c.classList.remove('is-active'));
+    allBtn.classList.add('is-active');
+    await renderMemories(null);
+  });
+  chips.appendChild(allBtn);
+
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (currentFilter === y ? ' is-active' : '');
+    btn.textContent = y;
+    btn.addEventListener('click', async () => {
+      currentFilter = y;
+      $$('.chip').forEach(c => c.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      await renderMemories(y);
+    });
+    chips.appendChild(btn);
+  });
+}
+
+async function renderMemories(filterYear) {
+  const grid = $('worldGrid');
+  if (!grid) return;
+
+  const mems = await DB.getAll(filterYear || null);
+  currentMemories = [...mems].sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+  grid.innerHTML = '';
+
+  if (!currentMemories.length) {
+    grid.innerHTML = '<p class="empty-memories">No memories here yet. Add your first one below ↓</p>';
+    return;
+  }
+
+  currentMemories.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'polaroid';
+    div.style.transform = `rotate(${m.rot || 0}deg)`;
+
+    const frame = document.createElement('div');
+    frame.className = 'polaroid__frame';
+
+    const img = document.createElement('img');
+    img.src = m.image; img.alt = m.caption || '';
+    img.loading = idx > 6 ? 'lazy' : 'eager';
+    frame.appendChild(img);
+
+    const body = document.createElement('div');
+    body.className = 'polaroid__body';
+
+    const cap  = document.createElement('p'); cap.className  = 'polaroid__caption'; cap.textContent = m.caption;
+    const meta = document.createElement('p'); meta.className = 'polaroid__meta';    meta.textContent = m.displayDate || m.year || '';
+    body.appendChild(cap); body.appendChild(meta);
+
+    // Delete button
+    const acts = document.createElement('div');
+    acts.className = 'polaroid__actions';
+    const del = document.createElement('button');
+    del.className = 'polaroid__del'; del.type = 'button'; del.title = 'Delete'; del.textContent = '×';
+    del.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (!confirm('Remove this memory?')) return;
+      await DB.del(m.id);
+      await renderMemories(currentFilter);
+      await renderChips();
+      await renderArchive();
+      showToast('Memory removed');
+    });
+    acts.appendChild(del); div.appendChild(acts);
+
+    div.appendChild(frame); div.appendChild(body);
+    div.addEventListener('click', () => openViewer(idx));
+    grid.appendChild(div);
+  });
+
+  await renderChips();
+  await renderArchive();
+}
+
+/* ─────────────────────────────────────────────────────────
+   VIEWER (fullscreen portrait)
+───────────────────────────────────────────────────────── */
+let viewerIdx = 0;
+
+function initViewer() {
+  const viewer  = $('viewer');
+  const vScrim  = $('vScrim');
+  const vClose  = $('vClose');
+  const vPrev   = $('vPrev');
+  const vNext   = $('vNext');
+  const vImg    = $('vImg');
+  const vCap    = $('vCap');
+  const vDate   = $('vDate');
+  const vBg     = $('vBg');
+
+  vClose && vClose.addEventListener('click', closeViewer);
+  vScrim && vScrim.addEventListener('click', closeViewer);
+  vPrev  && vPrev.addEventListener('click',  () => { viewerIdx = (viewerIdx - 1 + currentMemories.length) % currentMemories.length; showViewer(); });
+  vNext  && vNext.addEventListener('click',  () => { viewerIdx = (viewerIdx + 1) % currentMemories.length; showViewer(); });
+
+  document.addEventListener('keydown', e => {
+    if (viewer.hidden) return;
+    if (e.key === 'Escape')     closeViewer();
+    if (e.key === 'ArrowLeft')  { viewerIdx = (viewerIdx - 1 + currentMemories.length) % currentMemories.length; showViewer(); }
+    if (e.key === 'ArrowRight') { viewerIdx = (viewerIdx + 1) % currentMemories.length; showViewer(); }
+  });
+
+  // Swipe
+  let touchX = 0;
+  viewer.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+  viewer.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) {
+      viewerIdx = dx < 0
+        ? (viewerIdx + 1) % currentMemories.length
+        : (viewerIdx - 1 + currentMemories.length) % currentMemories.length;
+      showViewer();
+    }
+  });
+}
+
+function openViewer(idx) {
+  viewerIdx = idx;
+  showViewer();
+}
+
+function showViewer() {
+  const m = currentMemories[viewerIdx];
+  if (!m) return;
+  const viewer = $('viewer');
+  const vImg   = $('vImg');
+  const vCap   = $('vCap');
+  const vDate  = $('vDate');
+  const vBg    = $('vBg');
+
+  vImg.src              = m.image;
+  vCap.textContent      = m.caption || '';
+  vDate.textContent     = m.displayDate || m.year || '';
+  vBg.style.backgroundImage = `url(${m.image})`;
+
+  viewer.hidden = false;
+  document.body.classList.add('is-locked');
+}
+
+function closeViewer() {
+  $('viewer').hidden = true;
+  document.body.classList.remove('is-locked');
+}
+
+/* ─────────────────────────────────────────────────────────
+   YOUR MESSAGE
+───────────────────────────────────────────────────────── */
+function initYourMessage() {
+  const input     = $('yourMsgInput');
+  const preview   = $('yourMsgPreview');
+  const form      = $('yourMsgForm');
+  const note      = $('yourMsgSavedNote');
+  const shareToggle = $('shareMsgToggle');
+
+  // Load saved
+  const saved = localStorage.getItem('vish_yourmsg');
+  if (saved) { preview.textContent = saved; if (note) note.textContent = 'Your last message is showing above.'; }
+
+  // Live preview
+  input && input.addEventListener('input', () => { preview.textContent = input.value; });
+
+  // Submit
+  form && form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) { showToast('Write something first 💜'); return; }
+
+    localStorage.setItem('vish_yourmsg', text);
+    if (note) note.textContent = 'Message saved 💜';
+
+    if (shareToggle && shareToggle.checked) {
+      if (!confirm('Share this message with Siva? He will be able to read it.')) return;
+      const ok = await shareToCreator('messages', { text, year: CURRENT_YEAR });
+      showToast(ok ? 'Sent to Siva 💜' : 'Saved locally 💜', 'success');
+    } else {
+      showToast('Message saved 💜', 'success');
+    }
+  });
+}
+
+/* ─────────────────────────────────────────────────────────
+   ARCHIVE
+───────────────────────────────────────────────────────── */
+async function renderArchive() {
+  const timeline = $('archiveTimeline');
+  if (!timeline) return;
+
+  const allMems = await DB.getAll(null);
+  const byYear  = {};
+  allMems.forEach(m => {
+    const y = m.year || String(CURRENT_YEAR);
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(m);
+  });
+
+  const years = Object.keys(byYear).sort((a, b) => b - a);
+  if (!years.length) { timeline.innerHTML = '<p style="color:var(--text-dim);text-align:center;font-style:italic;">Memories you add will appear here, organised by year.</p>'; return; }
+
+  timeline.innerHTML = '';
+  years.forEach(y => {
+    const yearCfg   = CFG.years[y] || getYearCfg(Number(y));
+    const mems      = byYear[y];
+    const container = document.createElement('div');
+    container.className = 'archive__year';
+
+    const header = document.createElement('div');
+    header.className = 'archive__year-header';
+    header.innerHTML = `
+      <span class="archive__year-num">${y}</span>
+      <div class="archive__year-info">
+        <p class="archive__year-theme">${yearCfg.theme || 'Birthday Edition'}</p>
+        <p class="archive__year-count">${mems.length} memor${mems.length === 1 ? 'y' : 'ies'}</p>
+      </div>
+      <span class="archive__year-arrow">▾</span>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'archive__year-body';
+    mems.slice(0, 6).forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'polaroid';
+      card.style.cssText = `transform:rotate(${m.rot||0}deg);cursor:pointer;`;
+      card.innerHTML = `
+        <div class="polaroid__frame"><img src="${m.image}" alt="${m.caption||''}" loading="lazy"/></div>
+        <div class="polaroid__body"><p class="polaroid__caption">${m.caption||''}</p></div>
+      `;
+      card.addEventListener('click', () => {
+        currentMemories = mems;
+        openViewer(mems.indexOf(m));
+      });
+      body.appendChild(card);
+    });
+
+    header.addEventListener('click', () => {
+      const open = container.classList.toggle('is-open');
+    });
+
+    container.appendChild(header);
+    container.appendChild(body);
+    timeline.appendChild(container);
+  });
+}
+
+/* ─────────────────────────────────────────────────────────
+   BACKGROUND MAKER
+───────────────────────────────────────────────────────── */
+const GRADIENTS = [
+  'radial-gradient(ellipse at 30% 60%, #1e0a3c 0%, #07030f 60%)',
+  'radial-gradient(ellipse at 70% 30%, #1a0b3b 0%, #060210 60%)',
+  'linear-gradient(135deg, #0f0720 0%, #1a0a40 50%, #0a0318 100%)',
+  'linear-gradient(160deg, #0d0520 0%, #1f0d50 40%, #080315 100%)',
+  'radial-gradient(circle at 50% 100%, #200a50 0%, #040010 60%)',
+  'linear-gradient(180deg, #050115 0%, #1a0840 50%, #050115 100%)',
+  'radial-gradient(ellipse at 10% 90%, #1b0a45 0%, #040010 55%)',
+  'linear-gradient(220deg, #0a0220 0%, #200e50 50%, #060118 100%)',
+];
+
+function initBackgroundMaker() {
+  const bgOpen   = $('bgOpen');
+  const bgPanel  = $('bgPanel');
+  const bgScrim  = $('bgScrim');
+  const bgClose  = $('bgClose');
+  const bgModes  = $('bgModes');
+  const bgFile   = $('bgFile');
+  const bgDrop   = $('bgDrop');
+  const bgGrads  = $('bgGrads');
+  const bgReset  = $('bgReset');
+  const bgPhoto  = $('bgPhotoImg');
+  const bgVeil   = $('bgPhotoVeil');
+
+  // Build gradient swatches
+  GRADIENTS.forEach((g, i) => {
+    const sw = document.createElement('div');
+    sw.className = 'grad-swatch';
+    sw.style.background = g;
+    sw.title = `Gradient ${i + 1}`;
+    sw.addEventListener('click', () => {
+      $$('.grad-swatch').forEach(s => s.classList.remove('is-on'));
+      sw.classList.add('is-on');
+      applyBg({ mode: 'gradient', gradient: g });
+      saveBgState({ mode: 'gradient', gradient: g });
+    });
+    bgGrads && bgGrads.appendChild(sw);
+  });
+
+  function openBgPanelFn() { bgPanel.classList.add('is-open'); }
+  function closeBgPanel()  { bgPanel.classList.remove('is-open'); }
+  bgOpen  && bgOpen.addEventListener('click', openBgPanelFn);
+  bgClose && bgClose.addEventListener('click', closeBgPanel);
+  bgScrim && bgScrim.addEventListener('click', closeBgPanel);
+
+  // Mode tabs
+  bgModes && bgModes.addEventListener('click', e => {
+    const btn = e.target.closest('[data-mode]');
+    if (!btn) return;
+    const mode = btn.dataset.mode;
+    $$('#bgModes [data-mode]').forEach(b => b.classList.toggle('is-on', b === btn));
+    $('bgPhotoBlock').hidden    = mode !== 'photo';
+    $('bgGradientBlock').hidden = mode !== 'gradient';
+    $('bgControls').hidden      = mode === 'default';
+    if (mode === 'default') { applyBg({ mode: 'default' }); saveBgState({ mode: 'default' }); }
+  });
+
+  // File pick
+  bgDrop && bgDrop.addEventListener('click', () => bgFile.click());
+  bgFile && bgFile.addEventListener('change', async ({ target: { files } }) => {
+    const f = files[0]; if (!f) return;
+    try {
+      const data = await compressImage(f, 1600, 0.88);
+      applyBg({ mode: 'photo', src: data });
+      saveBgState({ mode: 'photo', src: data });
+      $('bgControls').hidden = false;
+      $('bgDropText').textContent = '📷 Change photo';
+    } catch (e) { showToast('Could not load image', 'error'); }
+  });
+
+  // Sliders
+  const sliders = ['bgBright', 'bgBlur', 'bgVeil', 'bgZoom'];
+  sliders.forEach(id => {
+    const el = $(id);
+    el && el.addEventListener('input', () => {
+      const vals = {};
+      sliders.forEach(s => { vals[s] = $(s) ? $(s).value : null; });
+      updateBgControls(vals);
+      const state = loadBgState() || {};
+      saveBgState({ ...state, ...vals });
+    });
+  });
+
+  bgReset && bgReset.addEventListener('click', () => {
+    applyBg({ mode: 'default' });
+    localStorage.removeItem('vish_bg');
+    $$('#bgModes [data-mode]').forEach(b => b.classList.toggle('is-on', b.dataset.mode === 'default'));
+    $('bgPhotoBlock').hidden = $('bgGradientBlock').hidden = $('bgControls').hidden = true;
+    showToast('Background reset');
+  });
+
+  // Restore saved
+  const saved = loadBgState();
+  if (saved) restoreBg(saved);
+}
+
+function applyBg(state) {
+  const img  = $('bgPhotoImg');
+  const veil = $('bgPhotoVeil');
+  if (!img) return;
+  if (state.mode === 'default') {
+    img.style.backgroundImage = ''; veil.style.opacity = '';
+    document.body.style.background = '';
+  } else if (state.mode === 'photo') {
+    img.style.backgroundImage = `url(${state.src})`;
+  } else if (state.mode === 'gradient') {
+    img.style.backgroundImage = '';
+    document.body.style.background = state.gradient;
+  }
+}
+
+function updateBgControls(vals) {
+  const img = $('bgPhotoImg');
+  if (!img) return;
+  const bright = vals.bgBright || 100;
+  const blur   = vals.bgBlur   || 6;
+  const zoom   = vals.bgZoom   || 100;
+  if ($('bgBrightVal')) $('bgBrightVal').textContent = bright + '%';
+  if ($('bgBlurVal'))   $('bgBlurVal').textContent   = blur   + 'px';
+  if ($('bgVeilVal'))   $('bgVeilVal').textContent   = (vals.bgVeil || 55) + '%';
+  if ($('bgZoomVal'))   $('bgZoomVal').textContent   = zoom   + '%';
+  img.style.filter    = `brightness(${bright/100}) blur(${blur}px)`;
+  img.style.transform = `scale(${zoom/100})`;
+  const veil = $('bgPhotoVeil');
+  if (veil) veil.style.opacity = (vals.bgVeil || 55) / 100;
+}
+
+function openBgPanel() { $('bgPanel').classList.add('is-open'); }
+function saveBgState(s) { try { localStorage.setItem('vish_bg', JSON.stringify(s)); } catch(e){} }
+function loadBgState()  { try { return JSON.parse(localStorage.getItem('vish_bg')); } catch(e){ return null; } }
+function restoreBg(s)   {
+  if (!s) return;
+  applyBg(s);
+  if (s.mode) {
+    $$('#bgModes [data-mode]').forEach(b => b.classList.toggle('is-on', b.dataset.mode === s.mode));
+    if ($('bgPhotoBlock'))    $('bgPhotoBlock').hidden    = s.mode !== 'photo';
+    if ($('bgGradientBlock')) $('bgGradientBlock').hidden = s.mode !== 'gradient';
+    if ($('bgControls'))      $('bgControls').hidden      = s.mode === 'default';
+  }
+  if (s.bgBright || s.bgBlur || s.bgVeil || s.bgZoom) {
+    ['bgBright','bgBlur','bgVeil','bgZoom'].forEach(id => {
+      const el = $(id);
+      if (el && s[id]) { el.value = s[id]; }
+    });
+    updateBgControls(s);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────────────────── */
+async function init() {
+  applyYearTheme();
+  initFirebase();
+  initCursorGlow();
+  initNav();
+  initLetter();
+  initWish();
+  initMemories();
+  initViewer();
+  initYourMessage();
+  initBackgroundMaker();
+
+  await renderMemories(null);
+  await renderArchive();
+
+  // Start the opening
+  if (document.readyState === 'complete') {
+    runOpeningMovie();
+  } else {
+    window.addEventListener('load', runOpeningMovie, { once: true });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})(); // end IIFE
+</script>
+
+</body>
+</html>

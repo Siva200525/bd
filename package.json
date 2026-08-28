@@ -1,0 +1,10 @@
+{
+  "name": "vish-birthday",
+  "version": "1.0.0",
+  "description": "Vish Birthday Cinematic Web Experience",
+  "scripts": {
+    "start": "npx -y http-server -p 8080 -c-1 -o",
+    "dev": "npx -y http-server -p 8080 -c-1 -o",
+    "generate-audio": "node generate_audio.js"
+  }
+}

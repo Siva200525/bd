@@ -1,0 +1,14 @@
+START HERE
+==========
+
+HOW TO RUN THE PROJECT:
+1. Double-click `start.bat` (or run `npm start` in your terminal).
+2. It automatically starts the local server and opens the birthday experience in your browser at http://127.0.0.1:8080.
+
+AUDIO & MUSIC:
+- A rich music box & acoustic piano soundtrack has been generated in `audio/birthday.mp3`.
+- The Web Audio synthesizer engine also has a full melodic fallback that plays seamlessly if audio files are offline.
+
+CREATOR DASHBOARD:
+- Open http://127.0.0.1:8080/dashboard.html to view real-time shared memories and wishes.
+
