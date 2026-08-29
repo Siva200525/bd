@@ -1,47 +1,96 @@
-Birthday (Master Build) 💜
+# Vish — Aurora Birthday
 
-This is the fully customized, cinematic, and interactive birthday experience built for Vish.
+A cinematic birthday experience built on real photographs of the Aurora.
+Plain HTML, CSS and JavaScript — no framework, no build step, no server,
+no backend, no accounts. **Open it by double-clicking `index.html`.**
 
-## How to Set It Up
+## The journey
 
-1. **Add Music**: Place a `birthday.mp3` inside the `audio/` folder.
-2. **Add Voice**: Place a `vish-voice.mp3` inside the `audio/` folder (optional fallback if browser speech synthesis isn't preferred).
-3. **Configure**: Open `script.js` and edit the `birthdayConfig` block at the top if you want to change names or default text.
+```
+darkness → stars → the aurora reveals → small crackers → fireworks
+→ one grand burst → HAPPY BIRTHDAY / Vish → the photo moment
+→ the flowers → the cake (build, light, wish, blow, cut)
+→ and then the ten scenes below
+```
 
-## How to Test
+The opening can be skipped at any time (SKIP button, or Escape).
+Scrolling is locked *only* while the opening plays, and is restored the
+moment it ends — it is never locked again.
 
-You do **not** need a local server to run the main birthday experience. 
-Simply double-click `index.html` to open it in your browser (`file:///.../index.html`).
+**Scenes:** Home · Letter · Wish · Memories · Future Dr. · Siva · Dream ·
+Your Message · Reels · Finale.
 
-## Cloud Sharing & Creator Dashboard
+## Files
 
-This project includes an optional real-time cloud sharing feature using **Firebase**.
+```
+index.html      structure: canvas, top bar, opening movie, nav,
+                theme panel, and one <section> per scene
+style.css       every design token, layout rule and animation
+js/config.js    ← EDIT THIS. All the words, the memories, the themes.
+js/livebg.js    the living sky: stars, shooting stars, drifting motes
+js/fx.js        fireworks, sparkles, confetti
+js/flowers.js   the bouquet that is offered before the cake
+js/cake.js      the cake — built, lit, blown out and cut, all in SVG
+js/movie.js     the opening sequence
+js/main.js      scenes, navigation, theme, and every section's behaviour
+img/aurora/     the nine Aurora skies (used by the theme picker)
+img/scenes/     the background photograph for each scene
+audio/          birthday.mp3 — optional; the page works fine without it
+```
 
-### 1. Create a Firebase Project
-1. Go to [Firebase Console](https://console.firebase.google.com/).
-2. Create a new project.
-3. Add a Web App to the project.
-4. Copy the `firebaseConfig` object they provide.
+## The living background
 
-### 2. Enable Firestore
-1. In the Firebase console, go to **Firestore Database** and create a database.
-2. Start in **Test Mode** (or configure secure rules).
-3. Create two collections: `memories` and `wishes`.
+Each scene layers a real photograph under four moving layers: a slow
+camera drift, a flowing aurora tinted by the current theme, drifting
+mist, and a breathing lake shimmer — with stars, shooting stars and
+floating motes painted on a canvas above them.
 
-### 3. Connect the Code
-1. Open `script.js` and paste your config into `birthdayConfig.firebaseConfig` (around line 17).
-2. Open `dashboard.html` and paste the identical config in the `<script>` block (around line 46).
+Nothing is ever darkened to make text readable. Instead a soft pool of
+shade sits *behind the text block only*, so the aurora, the mountains and
+the reflection stay fully visible around it.
 
-### 4. Use the Dashboard
-Double-click `dashboard.html` to open your private dashboard. When Vish clicks "Share with Creator" or enables "Live Sharing" on her page, you will see the updates appear here in real-time.
+Off-screen scenes pause their animations, the canvas stops entirely when
+the tab is hidden, and everything collapses to a still, readable page
+under `prefers-reduced-motion`.
 
-## Offline Resilience & File System
+## Changing things
 
-This project was specifically audited and refactored to work completely flawlessly over the `file://` protocol. 
-If internet access drops or Firebase is not configured, the site will **not** break. 
+**The words, the memories, the themes** all live in `js/config.js`.
 
-- **Local Storage System:** All memories, backgrounds, wishes, and edited letters are saved locally using IndexedDB.
-- **Audio Fallbacks:** If the mp3 files are missing, the app uses a built-in Web Audio API synthesizer to gently play "Happy Birthday" so it's never completely silent.
-- **Voice Fallbacks:** If the audio file fails, the app degrades gracefully to the browser's built-in `SpeechSynthesis` API.
-- **Backup & Restore:** Use the built-in backup and restore features on the Memory page to export all states as a JSON file and store it safely on a USB drive or cloud.
-- **Storage Limits Avoided:** Any large photos uploaded are locally downscaled via HTML5 Canvas (max 800px) and converted to optimized JPEGs, ensuring they easily fit in Firebase and local storage limits without crashing.
+**Siva's message** ships deliberately blank. Write it into `sivaMessage`
+and it appears in the Siva scene — nothing is ever auto-written for you.
+
+**Memories** are placeholder cards right now. Add real ones like this:
+
+```js
+{ title: "The Road Trip", caption: "That one time.", year: "2024",
+  img: "img/memories/trip.jpg" }
+```
+
+Leave `img` out to keep the placeholder look. The wall is a flowing grid
+of tilted polaroids — it already handles 30+ entries with no code change.
+
+**Aurora themes** — nine of them, all live. Each one drives its own
+atmosphere: the sky photograph, the aurora tint, the particles, the
+fireworks, the glow, the buttons and the accents. To add a tenth, append
+an entry to `auroraThemes` with an `img` path and its colours. The
+picker, the CSS variables and the particle palettes are all built from
+that array at runtime, so nothing else needs editing.
+
+## Phase 1
+
+This is design, animation, interaction, navigation, responsiveness and
+performance only. Nothing is saved anywhere — the theme is remembered in
+the browser, and the wish and the message live only for the visit.
+
+Real photo upload, 20–30+ stored memories, image compression, IndexedDB,
+backup/restore and any cloud features are Phase 2, and are deliberately
+not built yet.
+
+## Tested
+
+Every scene and the full opening were run in a real browser over
+`file://` at 320×640, 375×812, 390×844, 430×932, 768×1024, 1440×900 and
+1920×1080 — no horizontal overflow, no clipped or hidden copy, every nav
+item lands exactly on its section, scrolling stays free, and the console
+is clean.

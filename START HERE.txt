@@ -1,14 +1,24 @@
 START HERE
 ==========
 
-HOW TO RUN THE PROJECT:
-1. Double-click `start.bat` (or run `npm start` in your terminal).
-2. It automatically starts the local server and opens the birthday experience in your browser at http://127.0.0.1:8080.
+HOW TO OPEN IT:
+Double-click index.html. It opens straight in your browser — no server,
+no install, nothing to set up. An internet connection is used only for
+the decorative fonts; offline, the page falls back to system fonts and
+everything else still works exactly the same.
 
-AUDIO & MUSIC:
-- A rich music box & acoustic piano soundtrack has been generated in `audio/birthday.mp3`.
-- The Web Audio synthesizer engine also has a full melodic fallback that plays seamlessly if audio files are offline.
+THE OPENING:
+There is a short cinematic opening (aurora, fireworks, HAPPY BIRTHDAY,
+a photo moment, flowers, then the cake). You can skip it any time with
+the SKIP button in the corner, or the Escape key.
 
-CREATOR DASHBOARD:
-- Open http://127.0.0.1:8080/dashboard.html to view real-time shared memories and wishes.
+THE CAKE IS INTERACTIVE:
+Tap each candle to blow it out, then tap the cake to cut it.
 
+CHANGING THE SKY:
+The ☀ button in the top right opens "Choose Your Sky" — nine Aurora
+themes, each with its own colours and atmosphere.
+
+CUSTOMISING:
+All the words, the memories and the themes are in js/config.js.
+See README.md for details.
