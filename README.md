@@ -1,4 +1,5 @@
-# Vish — Aurora Birthday
+
+Aurora Birthday
 
 A cinematic birthday experience built on real photographs of the Aurora.
 Plain HTML, CSS and JavaScript — no framework, no build step, no server,
